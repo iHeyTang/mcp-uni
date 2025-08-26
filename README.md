@@ -1,3 +1,5 @@
+English | [中文](./README.zh-CN.md)
+
 # MCP-UNI
 
 **MCP-UNI** is a Model Context Protocol (MCP) universal server that acts as a unified gateway for connecting and managing multiple MCP servers. It provides a single HTTP endpoint to dynamically connect, disconnect, and interact with various MCP servers without requiring static configuration.
