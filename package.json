@@ -2,7 +2,7 @@
   "name": "mcp-uni",
   "description": "A unified gateway for managing multiple MCP servers",
   "private": false,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "build/index.js",
   "type": "module",
   "bin": {
