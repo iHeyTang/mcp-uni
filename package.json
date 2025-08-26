@@ -1,5 +1,6 @@
 {
   "name": "mcp-uni",
+  "description": "A unified gateway for managing multiple MCP servers",
   "private": false,
   "version": "0.1.0",
   "main": "build/index.js",
@@ -13,10 +14,22 @@
   "files": [
     "build"
   ],
-  "keywords": [],
-  "author": "iHeyTang",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "mcp-client",
+    "mcp-proxy",
+    "mcp-universal"
+  ],
+  "homepage": "https://github.com/iHeyTang/mcp-uni",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iHeyTang/mcp-uni.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iHeyTang/mcp-uni/issues"
+  },
   "license": "MIT",
-  "description": "",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.17.4",
     "commander": "^14.0.0",
