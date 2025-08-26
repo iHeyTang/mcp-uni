@@ -1,10 +1,11 @@
 {
   "name": "mcp-uni",
+  "private": false,
   "version": "0.1.0",
   "main": "build/index.js",
   "type": "module",
   "bin": {
-    "mcp-uni": "./build/index.js"
+    "mcp-uni": "build/index.js"
   },
   "scripts": {
     "build": "tsc && chmod 755 build/index.js"
