@@ -54,9 +54,7 @@ class McpHost {
       }
 
       try {
-        await client.connect(transport);
-        console.log(`Connected to server: ${name}`);
-
+        await client.connect(transport, { timeout: 30000 });
         let nextCursor: string | undefined;
 
         const tools: Tool[] = [];

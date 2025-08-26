@@ -1,6 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import z from 'zod';
-import { mcpHost, transportConfigSchema } from './host.js';
+import { mcpHost, TransportConfig, transportConfigSchema } from './host.js';
 import { toZodRawShape } from './utils/schema-converter.js';
 
 const connectMcpInputSchema = {
@@ -12,7 +12,11 @@ const disconnectMcpInputSchema = {
   name: z.string().describe('The name of the MCP server to disconnect from'),
 };
 
-export const createServer = async () => {
+export type McpUniConfig = {
+  mcpServers: Record<string, TransportConfig>;
+};
+
+export const createServer = async (config?: McpUniConfig | null) => {
   const server = new McpServer({
     name: 'mcp-uni',
     version: '0.1.0',
@@ -21,6 +25,14 @@ export const createServer = async () => {
       tools: {},
     },
   });
+
+  if (config?.mcpServers) {
+    console.log('Loading MCP servers from config...');
+    for (const [name, transportConfig] of Object.entries(config.mcpServers)) {
+      console.log(`Loading MCP server: ${name}`);
+      await mcpHost.addClient(name, transportConfig);
+    }
+  }
 
   server.tool('connect_mcp', 'Connect a MCP server to the host', connectMcpInputSchema, async args => {
     const { name, transportConfig } = args;

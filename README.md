@@ -50,6 +50,44 @@ npm run build
 
 ## Quick Start
 
+### Method 1: Using Configuration File (Recommended)
+
+1. **Create a configuration file** (`mcp-uni.config.json`):
+
+   ```json
+   {
+     "mcpServers": {
+       "everything": {
+         "type": "stdio",
+         "command": "npx",
+         "args": ["-y", "@modelcontextprotocol/server-everything"],
+         "env": {}
+       }
+     }
+   }
+   ```
+
+2. **Start the MCP-UNI server**:
+
+   ```bash
+   # Using npx (no installation required)
+   npx mcp-uni
+
+   # With custom port
+   npx mcp-uni --port 8000
+
+   # With custom config file
+   npx mcp-uni --config /path/to/your-config.json
+
+   # Or if installed globally
+   mcp-uni
+   mcp-uni --port 8000
+   ```
+
+   The server will start on `http://localhost:7200` (or your specified port) with SSE endpoint at `/stream`, and automatically connect the MCP servers defined in your configuration file.
+
+### Method 2: Manual Connection
+
 1. **Start the MCP-UNI server**:
 
    ```bash
@@ -92,6 +130,81 @@ npm run build
 
 ## Configuration
 
+### Configuration File
+
+MCP-UNI supports a configuration file (`mcp-uni.config.json`) to automatically connect MCP servers on startup. This allows you to pre-configure your MCP servers without manually connecting them each time.
+
+#### Configuration File Format
+
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"],
+      "env": {}
+    }
+  }
+}
+```
+
+#### Configuration File Location
+
+- **Default**: `mcp-uni.config.json` in the current working directory
+- **Custom**: Use `--config` option to specify a different path
+
+#### Example Configuration Files
+
+**Multiple MCP Servers:**
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/tmp"],
+      "env": {}
+    },
+    "everything": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-everything"],
+      "env": {}
+    },
+    "database": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "database_mcp_server"],
+      "env": {
+        "DB_URL": "sqlite:///app.db"
+      },
+      "cwd": "/path/to/db/server"
+    }
+  }
+}
+```
+
+**SSE Transport Configuration:**
+
+```json
+{
+  "mcpServers": {
+    "remote-server": {
+      "type": "sse",
+      "url": "http://example.com/sse",
+      "query": {
+        "param1": "value1"
+      },
+      "headers": {
+        "Authorization": "Bearer token"
+      }
+    }
+  }
+}
+```
+
 ### Transport Configuration
 
 MCP-UNI supports two types of transport configurations:
@@ -133,6 +246,7 @@ mcp-uni [options]
 Options:
   -p, --port <number>    Port to listen on (default: 7200)
   -s, --stream <path>    Stream endpoint path (default: /stream)
+  -c, --config <path>    Config file path (default: mcp-uni.config.json)
   -h, --help            Display help for command
   -V, --version         Display version number
 ```
@@ -140,11 +254,17 @@ Options:
 ### Examples
 
 ```bash
-# Start server on default port (7200)
+# Start server on default port (7200) with default config
 npx mcp-uni
 
 # Start server on custom port
 npx mcp-uni --port 8000
+
+# Start server with custom config file
+npx mcp-uni --config /path/to/my-config.json
+
+# Start server with custom port and config
+npx mcp-uni --port 8000 --config ./configs/production.json
 
 # Start server with custom stream endpoint
 npx mcp-uni --port 8000 --stream /events
